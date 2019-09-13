@@ -125,8 +125,8 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("assets/data/data.csv", function(err, DabblerData) {
-  if (err) throw err;
+d3.csv("assets/data/data.csv")
+  .then(function(DabblerData) {
 
   // parse data
   DabblerData.forEach(function(data) {
