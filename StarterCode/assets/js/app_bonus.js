@@ -148,12 +148,8 @@ d3.csv("assets/data/data.csv")
   // append y axis
   var yAxis = chartGroup.append("g")
     .classed("y-axis", true)
-    .attr("transform", `translate(${width}*-1, 0)`)
+    .attr("transform", `translate(0-${width}, 0)`)
     .call(leftAxis);
-
-  // append y axis
-  //chartGroup.append("g")
-  //  .call(leftAxis);
 
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
@@ -170,13 +166,13 @@ d3.csv("assets/data/data.csv")
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-  // Create proverty label
-  var provertyLabel = labelsGroup.append("text")
+  // Create poverty label
+  var povertyLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 20)
-    .attr("value", "proverty") // value to grab for event listener
+    .attr("value", "poverty") // value to grab for event listener
     .classed("active", true)
-    .text("In Proverty (%)");
+    .text("In Poverty (%)");
 
   var ageLabel = labelsGroup.append("text")
     .attr("x", 0)
@@ -230,15 +226,15 @@ d3.csv("assets/data/data.csv")
       //if (value !== chosenXAxis || value !== chosenYAxis) {
       if (1) {
         // replaces chosenXAxis with value
-        if (value === "proverty" || value === "age" || value === "income") {
+        if (value === "poverty" || value === "age" || value === "income") {
           chosenXAxis = value;
           // functions here found above csv import
           // updates x scale for new data
           xLinearScale = xScale(DabblerData, chosenXAxis);
           // updates x axis with transition
           xAxis = renderXAxes(xLinearScale, xAxis);
-          if (chosenXAxis === "proverty") {
-            provertyLabel
+          if (chosenXAxis === "poverty") {
+            povertyLabel
               .classed("active", true)
               .classed("inactive", false);
             ageLabel
@@ -248,7 +244,7 @@ d3.csv("assets/data/data.csv")
               .classed("active", false)
               .classed("inactive", true);
           } else if (chosenXAxis === "age") {
-            provertyLabel
+            povertyLabel
             .classed("active", false)
             .classed("inactive", true);
             ageLabel
@@ -258,7 +254,7 @@ d3.csv("assets/data/data.csv")
             .classed("active", false)
             .classed("inactive", true);  
           } else {
-            provertyLabel
+            povertyLabel
             .classed("active", false)
             .classed("inactive", true);
             ageLabel
