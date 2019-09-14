@@ -62,13 +62,14 @@ function renderXAxes(newXScale, xAxis) {
 
   return xAxis;
 }
+
 // function used for updating yAxis var upon click on axis label
 function renderYAxes(newYScale, yAxis) {
     var sideAxis = d3.axisLeft(newYScale);
   
     yAxis.transition()
       .duration(1000)
-      .call(leftAxis);
+      .call(sideAxis);
   
     return yAxis;
   }
@@ -145,8 +146,14 @@ d3.csv("assets/data/data.csv")
     .call(bottomAxis);
 
   // append y axis
-  chartGroup.append("g")
+  var yAxis = chartGroup.append("g")
+    .classed("y-axis", true)
+    .attr("transform", `translate(${width}*-1, 0)`)
     .call(leftAxis);
+
+  // append y axis
+  //chartGroup.append("g")
+  //  .call(leftAxis);
 
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
@@ -220,8 +227,8 @@ d3.csv("assets/data/data.csv")
     .on("click", function() {
       // get value of selection
       var value = d3.select(this).attr("value");
-      if (value !== chosenXAxis || value !== chosenYAxis) {
-
+      //if (value !== chosenXAxis || value !== chosenYAxis) {
+      if (1) {
         // replaces chosenXAxis with value
         if (value === "proverty" || value === "age" || value === "income") {
           chosenXAxis = value;
@@ -230,12 +237,74 @@ d3.csv("assets/data/data.csv")
           xLinearScale = xScale(DabblerData, chosenXAxis);
           // updates x axis with transition
           xAxis = renderXAxes(xLinearScale, xAxis);
+          if (chosenXAxis === "proverty") {
+            provertyLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            ageLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            incomeLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          } else if (chosenXAxis === "age") {
+            provertyLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            ageLabel
+            .classed("active", true)
+            .classed("inactive", false);
+            incomeLabel
+            .classed("active", false)
+            .classed("inactive", true);  
+          } else {
+            provertyLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            ageLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            incomeLabel
+            .classed("active", true)
+            .classed("inactive", false);
+          }
         } else {
           chosenYAxis = value;
           yLinearScale = yScale(DabblerData, chosenYAxis);        
           yAxis = renderYAxes(yLinearScale, yAxis);
+          if (chosenYAxis === "obesity") {
+            obeseLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            smokesLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            healthcareLabel
+              .classed("active", false)
+              .classed("inactive", true);
+          } else if (chosenYAxis === "smokes") {
+            obeseLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            smokesLabel
+            .classed("active", true)
+            .classed("inactive", false);
+            healthcareLabel
+            .classed("active", false)
+            .classed("inactive", true);  
+          } else {
+            obeseLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            smokesLabel
+            .classed("active", false)
+            .classed("inactive", true);
+            healthcareLabel
+            .classed("active", true)
+            .classed("inactive", false);
+          }
         }
-        
+
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, chosenXAxis, chosenYAxis);
         
@@ -244,22 +313,9 @@ d3.csv("assets/data/data.csv")
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
         // changes classes to change bold text
-        if (chosenXAxis === "num_albums") {
-          albumsLabel
-            .classed("active", true)
-            .classed("inactive", false);
-          hairLengthLabel
-            .classed("active", false)
-            .classed("inactive", true);
-        }
-        else {
-          albumsLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          hairLengthLabel
-            .classed("active", true)
-            .classed("inactive", false);
-        }
+
+        
+        
       }
     });
 });
