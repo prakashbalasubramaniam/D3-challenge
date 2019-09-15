@@ -121,6 +121,7 @@ d3.csv("assets/data/data.csv")
 
   // parse data
   DabblerData.forEach(function(data) {
+    //data.abbr = +data.abbr;
     data.poverty = +data.poverty;
     data.age = +data.age;
     data.income = +data.income;
@@ -158,9 +159,24 @@ d3.csv("assets/data/data.csv")
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
-    .attr("r", 20)
-    .attr("fill", "pink")
+    .attr("r", 10)
+    .attr("fill", "blue")
     .attr("opacity", ".5");
+
+  // append initial text into circles
+  var textGroup = chartGroup.selectAll("text")
+    .data(DabblerData)
+    .enter()
+    .append("text")
+    .text((d) => d.abbr)
+    .attr("x", d => xLinearScale(d[chosenXAxis]))
+    .attr("y", d => yLinearScale(d[chosenYAxis]))
+    .attr("text-anchor", "middle")
+    .attr("font-size", 10)
+    .attr("dy","0.35em")
+    .attr("fill", "white")
+    .attr("opacity", "5");
+    //.text((d) => d.abbr);
 
   // Create group for  x- axis labels
   var labelsGroup = chartGroup.append("g")
@@ -223,16 +239,36 @@ d3.csv("assets/data/data.csv")
     .on("click", function() {
       // get value of selection
       var value = d3.select(this).attr("value");
+              
+      // append initial text into circles
+      textGroup.selectAll("text")
+        .remove("");
+        // .data(DabblerData)
+        // .enter()
+        // .append("text")
+        // .attr("x", d => xLinearScale(d[chosenXAxis]))
+        // .attr("y", d => yLinearScale(d[chosenYAxis]))
+        // .attr("text-anchor", "middle")
+        // .attr("font-size", 10)
+        // .attr("dy","0.35em")
+        // .attr("fill", "white")
+        // .attr("opacity", "5");
+        //.html("");
+
       //if (value !== chosenXAxis || value !== chosenYAxis) {
       if (1) {
         // replaces chosenXAxis with value
         if (value === "poverty" || value === "age" || value === "income") {
           chosenXAxis = value;
+          
           // functions here found above csv import
           // updates x scale for new data
           xLinearScale = xScale(DabblerData, chosenXAxis);
+          
           // updates x axis with transition
           xAxis = renderXAxes(xLinearScale, xAxis);
+          
+          // to enable and disable labels
           if (chosenXAxis === "poverty") {
             povertyLabel
               .classed("active", true)
