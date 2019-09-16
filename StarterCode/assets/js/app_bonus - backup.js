@@ -176,7 +176,7 @@ d3.csv("assets/data/data.csv")
     .attr("opacity", ".5");
 
   // append initial text into circles
-  var textGroup = chartGroup.selectAll("text.state")
+  var textGroup = chartGroup.selectAll("text")
     .data(DabblerData)
     .enter()
     .append("text")
@@ -188,9 +188,6 @@ d3.csv("assets/data/data.csv")
     .attr("dy","0.35em")
     .attr("fill", "white")
     .attr("opacity", "5");  
-  
-  //exit group once update completes
-  textGroup.exit().remove();
 
   // Create group for  x- axis labels
   var labelsGroup = chartGroup.append("g")
@@ -251,29 +248,23 @@ d3.csv("assets/data/data.csv")
   // x axis labels event listener
   labelsGroup.selectAll("text")
     .on("click", function() {
-
-      //remove previous shown State Abbr
-      textGroup.select("text.state").remove("");
-
-      //exit group once update completes
-      textGroup.exit().remove();
-
-      textGroup.selectAll("text.state")
-      .data(DabblerData)
-      .enter()
-      .append("text")
-      .text((d) => d.abbr)
-      .attr("x", d => xLinearScale(d[chosenXAxis]))
-      .attr("y", d => yLinearScale(d[chosenYAxis]))
-      .attr("text-anchor", "middle")
-      .attr("font-size", 10)
-      .attr("dy","0.35em")
-      .attr("fill", "white")
-      .attr("opacity", "5")
-      .remove();  
-
       // get value of selection
       var value = d3.select(this).attr("value");
+              
+      // append initial text into circles
+      //textGroup.selectAll("text")
+        //.remove("");
+        // .data(DabblerData)
+        // .enter()
+        // .append("text")
+        // .attr("x", d => xLinearScale(d[chosenXAxis]))
+        // .attr("y", d => yLinearScale(d[chosenYAxis]))
+        // .attr("text-anchor", "middle")
+        // .attr("font-size", 10)
+        // .attr("dy","0.35em")
+        // .attr("fill", "white")
+        // .attr("opacity", "5");
+        //.html("");
 
       //if (value !== chosenXAxis || value !== chosenYAxis) {
       if (1) {
@@ -363,23 +354,10 @@ d3.csv("assets/data/data.csv")
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
-          // update new state abbr into circles  
-        textGroup.select("text.state")
-        //.remove("")
-        .data(DabblerData)
-        .enter()
-        .append("text")
-        .text((d) => d.abbr)
-        .attr("x", d => xLinearScale(d[chosenXAxis]))
-        .attr("y", d => yLinearScale(d[chosenYAxis]))
-        .attr("text-anchor", "middle")
-        .attr("font-size", 10)
-        .attr("dy","0.35em")
-        .attr("fill", "white")
-        .attr("opacity", "5"); 
+        
 
-        //exit group once update completes
-        textGroup.exit().remove();
+        
+        
       }
     });
 });
